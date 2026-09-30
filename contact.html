@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sombre">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact — EuropaSoft</title>
+<meta name="description" content="Écrire à EuropaSoft : question, défaut constaté, suggestion. Adresse contact@europasoft.fr.">
+<meta name="author" content="Yoann CRAMATTE">
+<meta name="theme-color" content="#050a16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f8fc" media="(prefers-color-scheme: light)">
+<meta name="color-scheme" content="dark light">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="EuropaSoft">
+<meta property="og:title" content="Contact — EuropaSoft">
+<meta property="og:description" content="Des applications qui fonctionnent sans compte, sans connexion et sans traceur. Vos fichiers restent chez vous.">
+<meta property="og:image" content="assets/img/logo-europasoft-horizontal.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="application-name" content="EuropaSoft">
+<meta name="apple-mobile-web-app-title" content="EuropaSoft">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+<a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+<!-- ================= EN-TÊTE ================= -->
+<header class="entete" id="entete">
+  <div class="conteneur entete__interieur">
+    <a class="marque" href="index.html" aria-label="EuropaSoft, accueil">
+      <img src="assets/img/logo-europasoft-horizontal.png" alt="EuropaSoft" width="900" height="410">
+    </a>
+
+    <nav class="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="applications.html">Applications</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+    </nav>
+
+    <div class="entete__actions">
+      <button class="bouton bouton--secondaire bouton-installer" id="installer-app" type="button" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14"/></svg>
+        <span>Installer</span>
+      </button>
+
+      <button class="bouton-icone" id="bascule-theme" type="button" aria-label="Basculer entre le thème clair et le thème sombre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path class="icone-lune" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>
+          <g class="icone-soleil" hidden>
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </g>
+        </svg>
+      </button>
+
+      <a class="bouton bouton--primaire" href="applications.html">Applications</a>
+
+      <button class="bouton-icone bouton-menu" id="ouvrir-menu" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="tiroir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="tiroir" id="tiroir" data-ouvert="non">
+  <div class="tiroir__panneau" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="tiroir__tete">
+      <button class="bouton-icone" id="fermer-menu" type="button" aria-label="Fermer le menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+    <a href="index.html">Accueil</a>
+    <a href="applications.html">Applications</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="contenu">
+
+  <section class="section section--haut">
+    <div class="conteneur">
+      <div class="entete-section">
+        <p class="surtitre">Contact</p>
+        <h1>Écrire à EuropaSoft</h1>
+        <p>
+          Une question, un défaut constaté, une idée d’amélioration : les
+          retours d’usage sont la matière première de ces applications.
+        </p>
+      </div>
+
+      <div class="grille-contact">
+        <!-- Formulaire : il compose un courriel, il n'envoie rien tout seul -->
+        <form class="formulaire revelation" id="formulaire-contact" novalidate>
+          <div class="champ">
+            <label for="sujet">Votre message porte sur</label>
+            <select id="sujet" name="sujet"></select>
+          </div>
+
+          <div class="champ">
+            <label for="nom">Votre nom <span class="facultatif">(facultatif)</span></label>
+            <input type="text" id="nom" name="nom" autocomplete="name">
+          </div>
+
+          <div class="champ">
+            <label for="message">Votre message</label>
+            <textarea id="message" name="message" rows="7" required
+              placeholder="Décrivez ce que vous avez fait, ce que vous attendiez, et ce qui s’est passé."></textarea>
+            <p class="champ__erreur" id="erreur-message" hidden>Un message vide n’aiderait personne : écrivez au moins une ligne.</p>
+          </div>
+
+          <button class="bouton bouton--primaire" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+            Préparer le courriel
+          </button>
+
+          <p class="formulaire__note">
+            Ce site n’a pas de serveur : le bouton ouvre votre logiciel de
+            messagerie avec le message déjà rédigé. Rien n’est envoyé sans
+            votre accord, et rien n’est enregistré ici.
+          </p>
+        </form>
+
+        <aside class="coordonnees revelation">
+          <div class="coordonnee">
+            <span class="coordonnee__icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+            </span>
+            <div>
+              <h2>Courriel</h2>
+              <p><a href="mailto:contact@europasoft.fr">contact@europasoft.fr</a></p>
+              <p class="coordonnee__detail">Réponse sous quelques jours ouvrés.</p>
+            </div>
+          </div>
+
+          <div class="coordonnee">
+            <span class="coordonnee__icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+            </span>
+            <div>
+              <h2>Code source</h2>
+              <p><a href="https://github.com/Yoann-CRAMATTE" rel="noopener">github.com/Yoann-CRAMATTE</a></p>
+              <p class="coordonnee__detail">Signaler un défaut ou proposer une correction sur les dépôts publics.</p>
+            </div>
+          </div>
+
+          <div class="coordonnee">
+            <span class="coordonnee__icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.9-7 9-4.1-1.1-7-4.8-7-9V6l7-3Z"/><path d="M9.2 12.2l2 2 3.6-3.9"/></svg>
+            </span>
+            <div>
+              <h2>Vos données</h2>
+              <p>Ce site ne dépose aucun cookie et n’appelle aucun service extérieur.</p>
+              <p class="coordonnee__detail">Votre message part de votre propre boîte, directement vers la nôtre.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= PIED DE PAGE ================= -->
+<footer class="pied">
+  <div class="conteneur">
+    <div class="pied__grille">
+      <div class="pied__marque">
+        <img src="assets/img/logo-europasoft-horizontal.png" alt="EuropaSoft" width="900" height="410">
+        <p>Logiciels sobres, hors ligne et sans collecte.<br>Conçus et développés en France.</p>
+      </div>
+
+      <div>
+        <h4>Applications</h4>
+        <ul id="pied-apps"></ul>
+      </div>
+
+      <div>
+        <h4>Le site</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="applications.html">Applications</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://github.com/Yoann-CRAMATTE" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:contact@europasoft.fr">contact@europasoft.fr</a></li>
+          <li><a href="https://www.europasoft.eu" rel="noopener">www.europasoft.eu</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pied__bas">
+      <p style="margin:0">© <span id="annee">2026</span> EuropaSoft — Yoann CRAMATTE</p>
+      <p style="margin:0">Aucun traceur sur ce site. Aucun cookie déposé.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Fiche détaillée, partagée par toutes les pages -->
+<div class="fiche" id="fiche" data-ouvert="non">
+  <div class="fiche__panneau" role="dialog" aria-modal="true" aria-labelledby="fiche-titre" id="fiche-panneau">
+    <button class="bouton-icone fiche__fermer" id="fermer-fiche" type="button" aria-label="Fermer la fiche">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+    <div id="fiche-corps"></div>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "EuropaSoft",
+  "url": "https://www.europasoft.eu",
+  "email": "contact@europasoft.fr",
+  "founder": { "@type": "Person", "name": "Yoann CRAMATTE" },
+  "sameAs": ["https://github.com/Yoann-CRAMATTE"]
+}
+</script>
+
+<script src="assets/js/donnees.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/pwa.js"></script>
+<script src="assets/js/contact.js"></script>
+</body>
+</html>

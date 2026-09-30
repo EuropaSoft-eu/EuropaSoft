@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="sombre">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Applications — EuropaSoft</title>
+<meta name="description" content="Le catalogue EuropaSoft : Clio, Calliope et Morphée. Plateformes, stores, téléchargement direct et ouverture dans le navigateur.">
+<meta name="author" content="Yoann CRAMATTE">
+<meta name="theme-color" content="#050a16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f8fc" media="(prefers-color-scheme: light)">
+<meta name="color-scheme" content="dark light">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="EuropaSoft">
+<meta property="og:title" content="Applications — EuropaSoft">
+<meta property="og:description" content="Des applications qui fonctionnent sans compte, sans connexion et sans traceur. Vos fichiers restent chez vous.">
+<meta property="og:image" content="assets/img/logo-europasoft-horizontal.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="application-name" content="EuropaSoft">
+<meta name="apple-mobile-web-app-title" content="EuropaSoft">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+<a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+<!-- ================= EN-TÊTE ================= -->
+<header class="entete" id="entete">
+  <div class="conteneur entete__interieur">
+    <a class="marque" href="index.html" aria-label="EuropaSoft, accueil">
+      <img src="assets/img/logo-europasoft-horizontal.png" alt="EuropaSoft" width="900" height="410">
+    </a>
+
+    <nav class="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="applications.html" aria-current="page">Applications</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="entete__actions">
+      <button class="bouton bouton--secondaire bouton-installer" id="installer-app" type="button" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14"/></svg>
+        <span>Installer</span>
+      </button>
+
+      <button class="bouton-icone" id="bascule-theme" type="button" aria-label="Basculer entre le thème clair et le thème sombre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path class="icone-lune" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>
+          <g class="icone-soleil" hidden>
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </g>
+        </svg>
+      </button>
+
+      <a class="bouton bouton--primaire" href="contact.html">Nous écrire</a>
+
+      <button class="bouton-icone bouton-menu" id="ouvrir-menu" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="tiroir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="tiroir" id="tiroir" data-ouvert="non">
+  <div class="tiroir__panneau" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="tiroir__tete">
+      <button class="bouton-icone" id="fermer-menu" type="button" aria-label="Fermer le menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+    <a href="index.html">Accueil</a>
+    <a href="applications.html">Applications</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<main id="contenu">
+
+  <section class="section section--haut">
+    <div class="conteneur">
+      <div class="entete-section">
+        <p class="surtitre">Le catalogue</p>
+        <h1>Applications</h1>
+        <p>
+          Chacune s’ouvre dans le navigateur, se télécharge directement ou
+          s’installe depuis un store, selon ce qu’elle sait faire. Le bouton
+          « Fiche détaillée » ouvre le descriptif complet.
+        </p>
+      </div>
+
+      <div class="filtres" role="group" aria-label="Filtrer les applications">
+        <button class="filtre" type="button" data-filtre="tout" aria-pressed="true">Toutes</button>
+        <button class="filtre" type="button" data-filtre="disponible" aria-pressed="false">Disponibles</button>
+        <button class="filtre" type="button" data-filtre="web" aria-pressed="false">Dans le navigateur</button>
+        <button class="filtre" type="button" data-filtre="developpement" aria-pressed="false">En développement</button>
+      </div>
+
+      <div class="grille-apps grille-apps--detaillee" id="grille-apps"></div>
+      <p id="aucun-resultat" hidden>Aucune application ne correspond à ce filtre.</p>
+    </div>
+  </section>
+
+  <section class="section section--liseree">
+    <div class="conteneur">
+      <div class="contact revelation">
+        <div>
+          <h2>Une application manque à l’appel ?</h2>
+          <p>
+            D’autres projets sont en chantier. Les retours d’usage décident
+            de ce qui sort en premier.
+          </p>
+        </div>
+        <div class="contact__actions">
+          <a class="bouton bouton--primaire" href="contact.html">Nous écrire</a>
+          <a class="bouton bouton--secondaire" href="https://github.com/Yoann-CRAMATTE" rel="noopener">Code source</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= PIED DE PAGE ================= -->
+<footer class="pied">
+  <div class="conteneur">
+    <div class="pied__grille">
+      <div class="pied__marque">
+        <img src="assets/img/logo-europasoft-horizontal.png" alt="EuropaSoft" width="900" height="410">
+        <p>Logiciels sobres, hors ligne et sans collecte.<br>Conçus et développés en France.</p>
+      </div>
+
+      <div>
+        <h4>Applications</h4>
+        <ul id="pied-apps"></ul>
+      </div>
+
+      <div>
+        <h4>Le site</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="applications.html">Applications</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://github.com/Yoann-CRAMATTE" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:contact@europasoft.fr">contact@europasoft.fr</a></li>
+          <li><a href="https://www.europasoft.eu" rel="noopener">www.europasoft.eu</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pied__bas">
+      <p style="margin:0">© <span id="annee">2026</span> EuropaSoft — Yoann CRAMATTE</p>
+      <p style="margin:0">Aucun traceur sur ce site. Aucun cookie déposé.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Fiche détaillée, partagée par toutes les pages -->
+<div class="fiche" id="fiche" data-ouvert="non">
+  <div class="fiche__panneau" role="dialog" aria-modal="true" aria-labelledby="fiche-titre" id="fiche-panneau">
+    <button class="bouton-icone fiche__fermer" id="fermer-fiche" type="button" aria-label="Fermer la fiche">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+    <div id="fiche-corps"></div>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "EuropaSoft",
+  "url": "https://www.europasoft.eu",
+  "email": "contact@europasoft.fr",
+  "founder": { "@type": "Person", "name": "Yoann CRAMATTE" },
+  "sameAs": ["https://github.com/Yoann-CRAMATTE"]
+}
+</script>
+
+<script src="assets/js/donnees.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/pwa.js"></script>
+</body>
+</html>

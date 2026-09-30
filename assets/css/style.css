@@ -1,0 +1,1909 @@
+/* ==================================================================
+   EuropaSoft — feuille de style
+   Aucune dépendance : pas de framework, pas de CDN, pas de police
+   distante. Tout tient dans ce fichier.
+
+   Sommaire
+   1.  Jetons de conception (couleurs, mesures, typographie)
+   2.  Base et accessibilité
+   3.  Mise en page et conteneurs
+   4.  En-tête et navigation
+   5.  Accroche et carrousel
+   6.  Promesses
+   7.  Grille des applications
+   8.  Fiche détaillée (panneau)
+   9.  Journal, stores, contact, pied de page
+   10. Animations
+   11. Adaptations d'écran
+   ================================================================== */
+
+/* ---------- 1. Jetons de conception -------------------------------- */
+
+:root {
+  /* Palette de marque, relevée sur le logo EuropaSoft */
+  --marine-900: #050a16;
+  --marine-800: #081124;
+  --marine-700: #0c1a33;
+  --marine-600: #12254a;
+  --bleu-500: #1b7fe0;
+  --bleu-400: #2aa7e8;
+  --bleu-300: #6cc6f5;
+  --or-400: #f5c518;
+
+  /* Deux jetons tenus au contraste, distincts des bleus décoratifs :
+     --accent-texte pour tout texte bleu, --bouton-1/2 pour le fond des
+     boutons portant du texte blanc. Mesurés ≥ 4,5:1 dans les deux
+     thèmes — les bleus vifs ci-dessus ne passent pas ce seuil. */
+  --accent-texte: #6cc6f5;
+  --bouton-1: #1a74cf;
+  --bouton-2: #0d52a4;
+
+  /* Surfaces */
+  --fond: var(--marine-900);
+  --fond-doux: var(--marine-800);
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-forte: rgba(255, 255, 255, 0.06);
+  --bordure: rgba(255, 255, 255, 0.09);
+  --bordure-forte: rgba(255, 255, 255, 0.16);
+
+  /* Texte */
+  --texte: #eef3fb;
+  --texte-doux: #a8b6cd;
+  --texte-faible: #74839c;
+
+  /* Accents d'état */
+  --vert: #35d39a;
+  --ambre: #f0b429;
+
+  /* Mesures */
+  --largeur-max: 1280px;
+  --gouttiere: clamp(1.15rem, 4vw, 3rem);
+  --rayon-s: 10px;
+  --rayon-m: 16px;
+  --rayon-l: 24px;
+  --rayon-xl: 32px;
+
+  /* Rythme vertical fluide */
+  --section-y: clamp(3.5rem, 9vw, 7.5rem);
+
+  /* Typographie — piles système, aucune police téléchargée */
+  --police-titre: 'Segoe UI Semibold', 'SF Pro Display', -apple-system,
+    BlinkMacSystemFont, 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --police-texte: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --police-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Mono',
+    Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* Ombres */
+  --ombre-carte: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -22px rgba(0, 0, 0, 0.9);
+  --ombre-haute: 0 30px 70px -30px rgba(0, 0, 0, 0.85);
+
+  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  color-scheme: dark;
+}
+
+/* Thème clair — appliqué par l'attribut data-theme sur <html> */
+:root[data-theme='clair'] {
+  --fond: #f6f8fc;
+  --fond-doux: #ffffff;
+  --surface: rgba(12, 26, 51, 0.035);
+  --surface-forte: rgba(12, 26, 51, 0.06);
+  --bordure: rgba(12, 26, 51, 0.12);
+  --bordure-forte: rgba(12, 26, 51, 0.22);
+  --texte: #0b1b33;
+  --texte-doux: #3f5570;
+  --texte-faible: #566a83;
+  --accent-texte: #0d5fa8;
+  --ombre-carte: 0 1px 2px rgba(11, 27, 51, 0.06), 0 16px 34px -24px rgba(11, 27, 51, 0.45);
+  --ombre-haute: 0 28px 64px -30px rgba(11, 27, 51, 0.4);
+  color-scheme: light;
+}
+
+/* ---------- 2. Base et accessibilité ------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: var(--police-texte);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Halos d'ambiance : deux dégradés fixés en fond de page */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(60rem 40rem at 78% -10%, rgba(42, 167, 232, 0.16), transparent 60%),
+    radial-gradient(48rem 34rem at 8% 12%, rgba(27, 127, 224, 0.14), transparent 62%);
+  pointer-events: none;
+}
+
+:root[data-theme='clair'] body::before {
+  background:
+    radial-gradient(60rem 40rem at 78% -10%, rgba(42, 167, 232, 0.16), transparent 60%),
+    radial-gradient(48rem 34rem at 8% 12%, rgba(27, 127, 224, 0.1), transparent 62%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--police-titre);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent-texte);
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--bleu-400);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.lien-evitement {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -140%);
+  z-index: 200;
+  background: var(--bouton-2);
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0 0 var(--rayon-s) var(--rayon-s);
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform var(--transition);
+}
+
+.lien-evitement:focus {
+  transform: translate(-50%, 0);
+}
+
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- 3. Mise en page et conteneurs -------------------------- */
+
+.conteneur {
+  width: 100%;
+  max-width: var(--largeur-max);
+  margin-inline: auto;
+  padding-inline: var(--gouttiere);
+}
+
+.section {
+  padding-block: var(--section-y);
+  position: relative;
+}
+
+.section--liseree {
+  border-top: 1px solid var(--bordure);
+}
+
+.entete-section {
+  max-width: 46rem;
+  margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+.surtitre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--police-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-texte);
+  margin-bottom: 0.9rem;
+}
+
+.surtitre::before {
+  content: '';
+  width: 1.75rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--bleu-400), transparent);
+}
+
+.entete-section h2 {
+  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+}
+
+.entete-section p.surtitre {
+  color: var(--accent-texte);
+}
+
+.entete-section p {
+  color: var(--texte-doux);
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.15rem);
+  margin-bottom: 0;
+}
+
+/* Boutons ------------------------------------------------------- */
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.78rem 1.3rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--transition), background var(--transition),
+    border-color var(--transition), box-shadow var(--transition);
+}
+
+.bouton:hover {
+  transform: translateY(-2px);
+}
+
+.bouton:active {
+  transform: translateY(0);
+}
+
+.bouton--primaire {
+  background: linear-gradient(135deg, var(--bouton-1), var(--bouton-2));
+  color: #fff;
+  box-shadow: 0 12px 28px -14px rgba(13, 82, 164, 0.95);
+}
+
+.bouton--primaire:hover {
+  box-shadow: 0 18px 34px -14px rgba(27, 127, 224, 1);
+}
+
+.bouton--secondaire {
+  background: var(--surface-forte);
+  border-color: var(--bordure-forte);
+  color: var(--texte);
+}
+
+.bouton--secondaire:hover {
+  background: var(--surface);
+  border-color: var(--bleu-400);
+}
+
+.bouton--fantome {
+  background: transparent;
+  border-color: var(--bordure);
+  color: var(--texte-doux);
+}
+
+.bouton--fantome:hover {
+  color: var(--texte);
+  border-color: var(--bordure-forte);
+}
+
+.bouton[aria-disabled='true'],
+.bouton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.bouton svg {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+}
+
+/* Étiquettes ---------------------------------------------------- */
+
+.etiquette {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.24rem 0.68rem;
+  border-radius: 999px;
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--texte-doux);
+  white-space: nowrap;
+}
+
+.etiquette--disponible {
+  color: var(--vert);
+  border-color: rgba(53, 211, 154, 0.35);
+  background: rgba(53, 211, 154, 0.1);
+}
+
+.etiquette--developpement {
+  color: var(--ambre);
+  border-color: rgba(240, 180, 41, 0.35);
+  background: rgba(240, 180, 41, 0.1);
+}
+
+.pastille {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+.etiquette--disponible .pastille {
+  box-shadow: 0 0 0 0 rgba(53, 211, 154, 0.6);
+  animation: pulsation 2.4s infinite;
+}
+
+/* ---------- 4. En-tête et navigation ------------------------------- */
+
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--fond) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.entete[data-defile='oui'] {
+  border-bottom-color: var(--bordure);
+}
+
+.entete__interieur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.25rem;
+}
+
+.marque {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  flex: none;
+}
+
+.marque img {
+  height: 2.6rem;
+  width: auto;
+}
+
+.nav-principale {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-principale a {
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  color: var(--texte-doux);
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 500;
+  transition: color var(--transition), background var(--transition);
+}
+
+.nav-principale a:hover,
+.nav-principale a[aria-current='true'] {
+  color: var(--texte);
+  background: var(--surface-forte);
+}
+
+.entete__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bouton-icone {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+  color: var(--texte-doux);
+  transition: color var(--transition), border-color var(--transition),
+    background var(--transition);
+}
+
+.bouton-icone:hover {
+  color: var(--texte);
+  border-color: var(--bordure-forte);
+  background: var(--surface-forte);
+}
+
+.bouton-icone svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.bouton-menu {
+  display: none;
+}
+
+/* Tiroir de navigation, sur petit écran */
+.tiroir {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: none;
+  background: color-mix(in srgb, var(--marine-900) 70%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.tiroir[data-ouvert='oui'] {
+  display: block;
+}
+
+.tiroir__panneau {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  width: min(20rem, 82vw);
+  background: var(--fond-doux);
+  border-left: 1px solid var(--bordure);
+  padding: 1.25rem var(--gouttiere) 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  box-shadow: var(--ombre-haute);
+  animation: glissement 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-y: auto;
+}
+
+.tiroir__tete {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.tiroir__panneau a {
+  padding: 0.85rem 0.6rem;
+  border-radius: var(--rayon-s);
+  color: var(--texte);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--bordure);
+}
+
+.tiroir__panneau a:hover {
+  background: var(--surface);
+}
+
+/* Bouton d'installation de l'application. Masqué tant que le
+   navigateur n'a pas signalé qu'elle est possible (attribut hidden,
+   retiré par pwa.js). */
+.bouton-installer[hidden] {
+  display: none;
+}
+
+.bouton-installer {
+  padding-inline: 1rem;
+}
+
+/* Bandeau « nouvelle version prête », posé par pwa.js */
+.bandeau-maj {
+  position: fixed;
+  left: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 190;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+  width: min(34rem, calc(100vw - 2rem));
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--rayon-m);
+  border: 1px solid var(--bordure-forte);
+  background: color-mix(in srgb, var(--fond-doux) 94%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--ombre-haute);
+  animation: montee 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bandeau-maj p {
+  flex: 1 1 12rem;
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.bandeau-maj .bouton {
+  padding: 0.5rem 1rem;
+  font-size: 0.88rem;
+}
+
+/* ---------- 5. Accroche et carrousel ------------------------------- */
+
+.section--haut {
+  padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  position: relative;
+}
+
+/* Trame technique, en fond de la première section */
+.section--haut::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--bordure) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bordure) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(75% 65% at 50% 25%, #000 15%, transparent 78%);
+  -webkit-mask-image: radial-gradient(75% 65% at 50% 25%, #000 15%, transparent 78%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.section--haut > * {
+  position: relative;
+}
+
+.entete-section--centre {
+  max-width: 44rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.entete-section--centre .surtitre::before {
+  display: none;
+}
+
+.entete-section h1 {
+  font-size: clamp(2rem, 1.3rem + 3.4vw, 3.75rem);
+  margin-bottom: 0.5em;
+}
+
+.accent {
+  background: linear-gradient(100deg, #8ed6f8, var(--bleu-400) 42%, var(--bleu-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+:root[data-theme='clair'] .accent {
+  background: linear-gradient(100deg, var(--bleu-400), var(--bleu-500) 55%, #0b3c82);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.point {
+  color: var(--or-400);
+}
+
+/* Carrousel --------------------------------------------------- */
+
+.carrousel {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.carrousel__cadre {
+  position: relative;
+}
+
+/* La piste est une zone défilante à accrochage : le glissement du
+   doigt et la molette fonctionnent sans une ligne de JavaScript. */
+.carrousel__piste {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+}
+
+.carrousel__piste::-webkit-scrollbar {
+  display: none;
+}
+
+.carrousel__piste:focus-visible {
+  outline: 2px solid var(--bleu-400);
+  outline-offset: 6px;
+  border-radius: var(--rayon-l);
+}
+
+.diapo {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding: clamp(1.5rem, 4vw, 3.25rem);
+  border-radius: var(--rayon-xl);
+  border: 1px solid var(--bordure);
+  background:
+    radial-gradient(38rem 24rem at 88% 10%, var(--app-c1), transparent 68%),
+    linear-gradient(160deg, var(--surface-forte), var(--surface));
+  box-shadow: var(--ombre-carte);
+  transition: opacity var(--transition);
+}
+
+/* Les diapositives voisines s'estompent : le regard sait où il est. */
+.diapo[data-actif='non'] {
+  opacity: 0.55;
+}
+
+.diapo h2 {
+  font-size: clamp(1.9rem, 1.4rem + 2.2vw, 3.1rem);
+  margin: 0.7rem 0 0.15rem;
+}
+
+.diapo__baseline {
+  color: var(--accent-texte);
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.2rem);
+  font-weight: 500;
+  margin-bottom: 0.9rem;
+}
+
+.diapo__resume {
+  color: var(--texte-doux);
+  max-width: 34rem;
+  margin-bottom: 1.6rem;
+  /* La diapositive donne l'idée, la fiche donne le détail : le résumé
+     est écourté pour que la hauteur reste tenable sur téléphone. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+@media (min-width: 960px) {
+  .diapo__resume {
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+  }
+}
+
+.diapo__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.diapo__visuel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 1.25rem;
+  min-height: 13rem;
+}
+
+.diapo__halo {
+  position: absolute;
+  width: min(20rem, 70%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--app-c1), transparent 68%);
+  opacity: 0.35;
+  filter: blur(14px);
+}
+
+.diapo__sceau {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(6.5rem, 16vw, 10rem);
+  aspect-ratio: 1;
+  border-radius: 28%;
+  background: linear-gradient(140deg, var(--app-c1), var(--app-c2));
+  color: #fff;
+  font-family: var(--police-titre);
+  font-size: clamp(3rem, 7vw, 4.75rem);
+  font-weight: 700;
+  box-shadow: 0 24px 50px -22px var(--app-c1);
+}
+
+.diapo__plateformes {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.diapo__plateformes li {
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--bordure);
+  background: var(--surface-forte);
+  font-size: 0.78rem;
+  color: var(--texte-doux);
+}
+
+/* Flèches, points, pause ---------------------------------------- */
+
+.carrousel__fleche {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: none;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid var(--bordure-forte);
+  background: color-mix(in srgb, var(--fond) 88%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--texte);
+  transition: background var(--transition), border-color var(--transition),
+    transform var(--transition);
+}
+
+.carrousel__fleche:hover {
+  border-color: var(--bleu-400);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.carrousel__fleche svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.carrousel__fleche--gauche {
+  left: 0.5rem;
+}
+
+.carrousel__fleche--droite {
+  right: 0.5rem;
+}
+
+.carrousel__pieds {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.carrousel__points {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Nom complet : « .point » seul entrait en collision avec le point
+   final doré du titre. */
+.carrousel__point {
+  width: 0.6rem;
+  height: 0.6rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bordure-forte);
+  transition: width var(--transition), background var(--transition);
+}
+
+.carrousel__point[aria-current='true'] {
+  width: 2rem;
+  background: linear-gradient(90deg, var(--bleu-400), var(--bleu-500));
+}
+
+.carrousel__pause {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--bordure);
+  background: transparent;
+  color: var(--texte-faible);
+  font-size: 0.82rem;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.carrousel__pause:hover {
+  color: var(--texte);
+  border-color: var(--bordure-forte);
+}
+
+.carrousel__pause svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/* ---------- 6. Promesses ------------------------------------------- */
+
+.promesses {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+.promesse {
+  padding: 1.4rem;
+  border-radius: var(--rayon-m);
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+}
+
+.promesse__icone {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: var(--rayon-s);
+  background: rgba(42, 167, 232, 0.14);
+  color: var(--accent-texte);
+  margin-bottom: 0.9rem;
+}
+
+.promesse__icone svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.promesse h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+
+.promesse p {
+  color: var(--texte-doux);
+  font-size: 0.94rem;
+  margin: 0;
+}
+
+/* ---------- 7. Grille des applications ----------------------------- */
+
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.filtre {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--bordure);
+  background: transparent;
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition), border-color var(--transition),
+    background var(--transition);
+}
+
+.filtre:hover {
+  color: var(--texte);
+  border-color: var(--bordure-forte);
+}
+
+.filtre[aria-pressed='true'] {
+  color: #fff;
+  background: linear-gradient(135deg, var(--bouton-1), var(--bouton-2));
+  border-color: transparent;
+}
+
+.grille-apps {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: 1fr;
+}
+
+/* `display: flex` l'emporterait sur le `display: none` que le
+   navigateur applique à [hidden] : les filtres ne masquaient rien. */
+.carte-app[hidden] {
+  display: none;
+}
+
+.carte-app {
+  position: relative;
+  /* La carte se mesure elle-même : son en-tête se réorganise selon sa
+     propre largeur, et non selon celle de la fenêtre — ce qui compte
+     quand la grille passe à deux ou trois colonnes. */
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 3vw, 1.85rem);
+  border-radius: var(--rayon-l);
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+  box-shadow: var(--ombre-carte);
+  overflow: hidden;
+  transition: transform var(--transition), border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+/* Filet lumineux aux couleurs de l'application, en haut de la carte */
+.carte-app::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--app-c1), var(--app-c2));
+  opacity: 0.85;
+}
+
+.carte-app::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(28rem 16rem at 100% 0%, var(--app-c1), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+
+.carte-app:hover {
+  transform: translateY(-4px);
+  border-color: var(--bordure-forte);
+  box-shadow: var(--ombre-haute);
+}
+
+.carte-app:hover::after {
+  opacity: 0.09;
+}
+
+.carte-app > * {
+  position: relative;
+  z-index: 1;
+}
+
+.carte-app__tete {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.carte-app__sceau {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: none;
+  border-radius: 18px;
+  background: linear-gradient(140deg, var(--app-c1), var(--app-c2));
+  color: #fff;
+  font-family: var(--police-titre);
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 10px 22px -12px var(--app-c1);
+}
+
+.carte-app__titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.65rem;
+  margin: 0 0 0.15rem;
+  font-size: 1.4rem;
+}
+
+.carte-app__version {
+  font-family: var(--police-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--texte-faible);
+  letter-spacing: 0;
+}
+
+.carte-app__baseline {
+  color: var(--accent-texte);
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.carte-app__resume {
+  color: var(--texte-doux);
+  font-size: 0.96rem;
+  margin-bottom: 1.15rem;
+}
+
+.plateformes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.35rem;
+}
+
+.plateformes li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 8px;
+  background: var(--surface-forte);
+  border: 1px solid var(--bordure);
+  font-size: 0.76rem;
+  color: var(--texte-doux);
+  font-weight: 500;
+}
+
+.plateformes svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  opacity: 0.85;
+}
+
+.carte-app__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+.carte-app__actions .bouton {
+  flex: 1 1 auto;
+  min-width: 9.5rem;
+}
+
+/* L'état reste dans le flux : il ne peut donc jamais recouvrir le titre. */
+.carte-app__etat {
+  margin-left: auto;
+  align-self: flex-start;
+  flex: none;
+}
+
+.carte-app__identite {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Carte étroite : l'état passe sur sa propre ligne, le titre et sa
+   baseline récupèrent toute la largeur. */
+@container (max-width: 27rem) {
+  .carte-app__tete {
+    flex-wrap: wrap;
+  }
+
+  .carte-app__etat {
+    order: -1;
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 0.15rem;
+  }
+}
+
+/* ---------- 8. Fiche détaillée (panneau) --------------------------- */
+
+.fiche {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  background: color-mix(in srgb, var(--marine-900) 76%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.fiche[data-ouvert='oui'] {
+  display: flex;
+}
+
+.fiche__panneau {
+  position: relative;
+  width: 100%;
+  max-width: 46rem;
+  max-height: 92dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--fond-doux);
+  border: 1px solid var(--bordure-forte);
+  border-radius: var(--rayon-xl) var(--rayon-xl) 0 0;
+  box-shadow: var(--ombre-haute);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  padding-bottom: max(clamp(1.5rem, 4vw, 2.5rem), env(safe-area-inset-bottom));
+  animation: montee 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fiche__fermer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.fiche__tete {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-right: 3rem;
+}
+
+.fiche__tete .carte-app__sceau {
+  width: 3.75rem;
+  height: 3.75rem;
+  font-size: 1.7rem;
+}
+
+.fiche h2 {
+  font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+  margin-bottom: 0.2rem;
+}
+
+.fiche__muse {
+  color: var(--texte-faible);
+  font-size: 0.88rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.fiche__bloc {
+  margin-bottom: 1.6rem;
+}
+
+.fiche__bloc h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texte-faible);
+  font-family: var(--police-mono);
+  margin-bottom: 0.8rem;
+}
+
+.liste-points li {
+  position: relative;
+  padding-left: 1.6rem;
+  margin-bottom: 0.65rem;
+  color: var(--texte-doux);
+  font-size: 0.95rem;
+}
+
+.liste-points li::before {
+  content: '';
+  position: absolute;
+  left: 0.15rem;
+  top: 0.62em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 2px;
+  background: linear-gradient(135deg, var(--app-c1), var(--app-c2));
+}
+
+.telechargements {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.telechargement {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--rayon-m);
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--transition), background var(--transition),
+    transform var(--transition);
+}
+
+a.telechargement:hover {
+  border-color: var(--bleu-400);
+  background: var(--surface-forte);
+  transform: translateX(2px);
+}
+
+.telechargement[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.telechargement__icone {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: none;
+  border-radius: 10px;
+  background: var(--surface-forte);
+  color: var(--accent-texte);
+}
+
+.telechargement__icone svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.telechargement strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.telechargement small {
+  color: var(--texte-faible);
+  font-size: 0.82rem;
+}
+
+.telechargement__fleche {
+  margin-left: auto;
+  color: var(--texte-faible);
+  flex: none;
+}
+
+.telechargement__fleche svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.note {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--rayon-m);
+  border: 1px solid rgba(240, 180, 41, 0.28);
+  background: rgba(240, 180, 41, 0.08);
+  color: var(--texte-doux);
+  font-size: 0.88rem;
+}
+
+.note svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: none;
+  color: var(--ambre);
+  margin-top: 0.15rem;
+}
+
+/* ---------- 9. Journal, stores, contact, pied de page -------------- */
+
+/* Journal des mises à jour ------------------------------------- */
+
+.journal {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  counter-reset: none;
+}
+
+.entree {
+  display: grid;
+  gap: 0.75rem 2rem;
+  grid-template-columns: 1fr;
+  padding: clamp(1.25rem, 3vw, 1.85rem);
+  border-radius: var(--rayon-l);
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.entree::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--app-c1), var(--app-c2));
+}
+
+.entree__date time {
+  font-family: var(--police-mono);
+  font-size: 0.82rem;
+  color: var(--texte-faible);
+  letter-spacing: 0.02em;
+}
+
+.entree__tete {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.entree__sceau {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: none;
+  border-radius: 10px;
+  background: linear-gradient(140deg, var(--app-c1), var(--app-c2));
+  color: #fff;
+  font-family: var(--police-titre);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.entree__tete h3 {
+  font-size: clamp(1.05rem, 1rem + 0.45vw, 1.3rem);
+  margin: 0;
+}
+
+.entree .liste-points {
+  margin-bottom: 1.1rem;
+}
+
+/* Pastilles de stores ------------------------------------------ */
+
+.stores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.35rem;
+}
+
+.store {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--rayon-s);
+  border: 1px solid var(--bordure);
+  background: var(--surface-forte);
+  color: var(--texte);
+  text-decoration: none;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+a.store:hover {
+  border-color: var(--bleu-400);
+  transform: translateY(-2px);
+}
+
+.store[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.store svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: none;
+  color: var(--accent-texte);
+}
+
+.store small {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texte-faible);
+  line-height: 1.4;
+}
+
+.store strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.store--pwa svg {
+  color: var(--vert);
+}
+
+/* Page Contact -------------------------------------------------- */
+
+.grille-contact {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.formulaire {
+  padding: clamp(1.35rem, 3vw, 2.25rem);
+  border-radius: var(--rayon-l);
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+}
+
+.champ {
+  margin-bottom: 1.15rem;
+}
+
+.champ label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.facultatif {
+  font-weight: 400;
+  color: var(--texte-faible);
+}
+
+.champ input,
+.champ select,
+.champ textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--rayon-s);
+  border: 1px solid var(--bordure-forte);
+  background: var(--fond);
+  color: var(--texte);
+  font: inherit;
+  font-size: 0.95rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.champ textarea {
+  resize: vertical;
+  min-height: 8rem;
+  line-height: 1.6;
+}
+
+.champ input:focus,
+.champ select:focus,
+.champ textarea:focus {
+  outline: none;
+  border-color: var(--bleu-400);
+  box-shadow: 0 0 0 3px rgba(42, 167, 232, 0.2);
+}
+
+.champ [aria-invalid='true'] {
+  border-color: #ff6b6b;
+}
+
+.champ__erreur {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  color: #ff8b8b;
+}
+
+.formulaire__note {
+  margin: 1.1rem 0 0;
+  font-size: 0.85rem;
+  color: var(--texte-faible);
+}
+
+.coordonnees {
+  display: grid;
+  gap: 1rem;
+}
+
+.coordonnee {
+  display: flex;
+  gap: 0.9rem;
+  padding: 1.15rem;
+  border-radius: var(--rayon-m);
+  border: 1px solid var(--bordure);
+  background: var(--surface);
+}
+
+.coordonnee__icone {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: var(--rayon-s);
+  background: rgba(42, 167, 232, 0.14);
+  color: var(--accent-texte);
+}
+
+.coordonnee__icone svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.coordonnee h2 {
+  font-size: 0.95rem;
+  margin: 0 0 0.25rem;
+}
+
+.coordonnee p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.coordonnee__detail {
+  color: var(--texte-faible);
+  font-size: 0.85rem !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Méthode, contact, pied de page -------------------------------- */
+
+.contact {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  border-radius: var(--rayon-xl);
+  border: 1px solid var(--bordure-forte);
+  background:
+    radial-gradient(40rem 20rem at 85% 0%, rgba(42, 167, 232, 0.14), transparent 70%),
+    var(--surface);
+  grid-template-columns: 1fr;
+}
+
+.contact h2 {
+  font-size: clamp(1.5rem, 1.2rem + 1.6vw, 2.35rem);
+}
+
+.contact p {
+  color: var(--texte-doux);
+  margin-bottom: 0;
+}
+
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.pied {
+  border-top: 1px solid var(--bordure);
+  padding-block: 2.5rem 3rem;
+  color: var(--texte-faible);
+  font-size: 0.88rem;
+}
+
+.pied__grille {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+  margin-bottom: 2rem;
+}
+
+.pied h4 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--texte-doux);
+  font-family: var(--police-mono);
+  margin-bottom: 0.9rem;
+}
+
+.pied li {
+  margin-bottom: 0.5rem;
+}
+
+.pied a {
+  color: var(--texte-faible);
+  text-decoration: none;
+}
+
+.pied a:hover {
+  color: var(--texte);
+}
+
+.pied__marque img {
+  height: 3.1rem;
+  margin-bottom: 0.9rem;
+}
+
+.pied__bas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--bordure);
+}
+
+/* ---------- 10. Animations ----------------------------------------- */
+
+@keyframes clignotement {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes pulsation {
+  70% {
+    box-shadow: 0 0 0 0.45rem rgba(53, 211, 154, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(53, 211, 154, 0);
+  }
+}
+
+@keyframes montee {
+  from {
+    transform: translateY(2.5rem);
+    opacity: 0;
+  }
+}
+
+@keyframes glissement {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+/* Apparition au défilement, pilotée par app.js */
+.revelation {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 600ms ease, transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.revelation[data-vue='oui'] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .revelation {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- 11. Adaptations d'écran -------------------------------- */
+
+/* Très petits téléphones (jusqu'à 380 px) : on resserre tout. */
+@media (max-width: 380px) {
+  .diapo__actions .bouton,
+  .carte-app__actions .bouton {
+    width: 100%;
+  }
+
+  .carte-app__tete {
+    gap: 0.75rem;
+  }
+
+  .carte-app__sceau {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.25rem;
+  }
+
+  .marque img {
+    height: 2.1rem;
+  }
+}
+
+/* Sous 560 px, l'état passe sur sa propre ligne : le titre et sa
+   baseline récupèrent toute la largeur. */
+@media (max-width: 560px) {
+  .carte-app__tete {
+    flex-wrap: wrap;
+  }
+
+  .carte-app__etat {
+    order: -1;
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 0.15rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .bouton-installer span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .bouton-installer {
+    padding: 0.7rem;
+    border-radius: 50%;
+  }
+}
+
+/* Téléphones et petites tablettes : menu en tiroir. */
+@media (max-width: 860px) {
+  .nav-principale {
+    display: none;
+  }
+
+  .bouton-menu {
+    display: inline-grid;
+  }
+
+  .entete__actions .bouton--primaire {
+    display: none;
+  }
+}
+
+/* À partir de 600 px : deux colonnes pour les promesses. */
+@media (min-width: 600px) {
+  .promesses {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fiche {
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .fiche__panneau {
+    border-radius: var(--rayon-xl);
+    max-height: 88dvh;
+  }
+}
+
+/* À partir de 720 px : journal en deux colonnes, contact aussi. */
+@media (min-width: 720px) {
+  .entree {
+    grid-template-columns: 10rem 1fr;
+  }
+
+  .grille-contact {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+  }
+
+  .grille-apps {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  }
+
+  .pied__grille {
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+  }
+}
+
+/* Ordinateurs : diapositive sur deux colonnes, flèches visibles. */
+@media (min-width: 960px) {
+  .diapo {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.8fr);
+  }
+
+  .carrousel__fleche {
+    display: grid;
+  }
+
+  .promesses {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contact {
+    grid-template-columns: 1.4fr auto;
+  }
+
+  .contact__actions {
+    justify-content: flex-end;
+  }
+}
+
+/* Grands écrans : on élargit le conteneur plutôt que d'étirer le texte. */
+@media (min-width: 1440px) {
+  :root {
+    --largeur-max: 1360px;
+  }
+}
+
+@media (min-width: 1800px) {
+  :root {
+    --largeur-max: 1560px;
+    --section-y: 8.5rem;
+  }
+
+  .grille-apps {
+    grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+  }
+}
+
+/* Très grands écrans (2K et au-delà) : la typographie monte d'un cran. */
+@media (min-width: 2200px) {
+  :root {
+    --largeur-max: 1760px;
+  }
+
+  body {
+    font-size: 1.125rem;
+  }
+}
+
+/* Écrans bas et larges, en paysage sur téléphone. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .section--haut {
+    padding-block: 2.5rem;
+  }
+
+  .fiche__panneau {
+    max-height: 96dvh;
+  }
+}
+
+/* Impression : une fiche propre, sans décor. */
+@media print {
+  .entete,
+  .tiroir,
+  .fiche,
+  .section--haut::before,
+  .carrousel__fleche,
+  .carrousel__pieds,
+  .contact__actions,
+  .filtres {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .revelation {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .carte-app {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
