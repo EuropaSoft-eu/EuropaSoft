@@ -40,6 +40,10 @@
     play: '<path d="M4.5 3.3v17.4c0 .6.6 1 1.1.7l12.6-8.7c.5-.3.5-1.1 0-1.4L5.6 2.6c-.5-.3-1.1.1-1.1.7Z"/><path d="M13.6 9.2 5 20.9M13.6 14.8 5 3.1"/>',
     appstore: '<path d="M16 3c-.9.1-1.9.6-2.5 1.3-.5.6-1 1.6-.8 2.5 1 .1 2-.4 2.6-1.1.6-.7 1-1.7.7-2.7Z"/><path d="M19 16.5c-.5 1.2-.8 1.7-1.4 2.7-.9 1.4-2.1 3.1-3.6 3.1-1.3 0-1.7-.9-3.5-.9s-2.2.9-3.5.9c-1.5 0-2.6-1.5-3.5-2.9C1.6 16 1.3 11.4 3.1 9c.9-1.2 2.3-2 3.8-2 1.5 0 2.5 1 3.7 1 1.2 0 2-1 3.7-1 1.3 0 2.7.7 3.7 2-3.2 1.8-2.7 6.4 1 7.5Z"/>',
     installer: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 8v6M9 11.5l3 3 3-3"/>',
+    copier: '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+    partage: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>',
+    check: '<polyline points="20 6 9 17 4 12"/>',
+    recherche: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
     github:
       '<path fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/>',
   };
@@ -63,6 +67,27 @@
     Windows: 'windows',
     Linux: 'linux',
   };
+
+  /* ---------------- Notifications Toast ---------------------------- */
+
+  let toastTimeout = null;
+  function afficherToast(message) {
+    let toast = $('#europasoft-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'europasoft-toast';
+      toast.className = 'toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = icone('check') + '<span>' + esc(message) + '</span>';
+    toast.classList.add('toast--visible');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.classList.remove('toast--visible');
+    }, 2800);
+  }
 
   /* ---------------- Rendu : promesses ----------------------------- */
 
@@ -132,12 +157,18 @@
         : `<button class="bouton bouton--primaire" type="button" data-fiche="${esc(app.id)}">
              ${icone('info')}En savoir plus</button>`;
 
+    const visuelSceau = app.icone
+      ? `<img class="carte-app__icone-img" src="${esc(app.icone)}" alt="${esc(app.nom)}" width="52" height="52" loading="lazy">`
+      : `<span class="carte-app__monogramme">${esc(app.monogramme)}</span>`;
+
     return `
     <article class="carte-app revelation" id="${esc(app.id)}"
              style="--app-c1:${esc(app.accent[0])};--app-c2:${esc(app.accent[1])}"
-             data-statut="${esc(app.statut)}" data-web="${web ? 'oui' : 'non'}">
+             data-statut="${esc(app.statut)}" data-web="${web ? 'oui' : 'non'}"
+             data-nom="${esc(app.nom.toLowerCase())}"
+             data-desc="${esc((app.nom + ' ' + app.categorie + ' ' + app.baseline + ' ' + (app.plateformes || []).join(' ')).toLowerCase())}">
       <div class="carte-app__tete">
-        <div class="carte-app__sceau" aria-hidden="true">${esc(app.monogramme)}</div>
+        <div class="carte-app__sceau ${app.icone ? 'carte-app__sceau--image' : ''}" aria-hidden="true">${visuelSceau}</div>
         <div class="carte-app__identite">
           <h3 class="carte-app__titre">${esc(app.nom)}
             <span class="carte-app__version">${esc(app.version)}</span>
@@ -168,6 +199,11 @@
                  Fiche détaillée</button>`
             : ''
         }
+        <button class="bouton-icone bouton-action-secondaire" type="button" data-partage="${esc(app.id)}"
+                aria-label="Partager ou copier le lien direct vers ${esc(app.nom)}"
+                title="Copier le lien direct">
+          ${icone('partage')}
+        </button>
       </div>
     </article>`;
   }
@@ -180,14 +216,20 @@
       .map((app) => carte(app, detaillee))
       .join('');
 
+    const total = EUROPASOFT.applications.length;
     const publiees = EUROPASOFT.applications.filter((a) => a.statut === 'disponible').length;
     const compteur = $('#chiffre-apps');
     if (compteur) compteur.textContent = String(publiees);
 
+    const compteurRes = $('#compteur-resultats');
+    if (compteurRes) {
+      compteurRes.textContent = `${total} application${total > 1 ? 's' : ''} au catalogue`;
+    }
+
     const liste = $('#pied-apps');
     if (liste) {
       liste.innerHTML = EUROPASOFT.applications
-        .map((a) => `<li><a href="#${esc(a.id)}">${esc(a.nom)}</a></li>`)
+        .map((a) => `<li><a href="applications.html#${esc(a.id)}">${esc(a.nom)}</a></li>`)
         .join('');
     }
   }
@@ -205,6 +247,10 @@
       .map((e) => {
         const app = parApp[e.app] || {};
         const accent = app.accent || ['#2AA7E8', '#0E5FA8'];
+        const sceau = app.icone
+          ? `<img class="entree__icone-img" src="${esc(app.icone)}" alt="${esc(app.nom)}" width="36" height="36" loading="lazy">`
+          : esc(app.monogramme || '?');
+
         return `
       <li class="entree revelation" style="--app-c1:${esc(accent[0])};--app-c2:${esc(accent[1])}">
         <div class="entree__date">
@@ -212,7 +258,7 @@
         </div>
         <div class="entree__corps">
           <div class="entree__tete">
-            <span class="entree__sceau" aria-hidden="true">${esc(app.monogramme || '?')}</span>
+            <span class="entree__sceau ${app.icone ? 'entree__sceau--image' : ''}" aria-hidden="true">${sceau}</span>
             <h3>${esc(e.titre)}</h3>
           </div>
           <ul class="liste-points">
@@ -226,33 +272,78 @@
       .join('');
   }
 
-  /* ---------------- Filtres --------------------------------------- */
+  /* ---------------- Filtres et Recherche en temps réel ------------- */
 
-  function brancherFiltres() {
+  function brancherFiltresEtRecherche() {
     const boutons = $$('.filtre');
     const vide = $('#aucun-resultat');
+    const champ = $('#recherche-apps');
+    const effacer = $('#recherche-effacer');
+    const compteur = $('#compteur-resultats');
+
+    let filtreActif = 'tout';
+    let requete = '';
+
+    function actualiser() {
+      const cartes = $$('.carte-app');
+      let visibles = 0;
+
+      cartes.forEach((carte) => {
+        const okFiltre =
+          filtreActif === 'tout' ||
+          (filtreActif === 'web' && carte.dataset.web === 'oui') ||
+          carte.dataset.statut === filtreActif;
+
+        const texte = carte.dataset.desc || '';
+        const okRecherche = !requete || texte.includes(requete);
+
+        const afficher = okFiltre && okRecherche;
+        carte.hidden = !afficher;
+        if (afficher) visibles += 1;
+      });
+
+      if (vide) vide.hidden = visibles !== 0;
+
+      if (compteur) {
+        if (!requete && filtreActif === 'tout') {
+          compteur.textContent = `${visibles} application${visibles > 1 ? 's' : ''} au catalogue`;
+        } else {
+          compteur.textContent = `${visibles} résultat${visibles > 1 ? 's' : ''} correspondant`;
+        }
+      }
+
+      if (effacer) {
+        effacer.hidden = !requete;
+      }
+    }
 
     boutons.forEach((b) => {
       b.addEventListener('click', () => {
         boutons.forEach((autre) =>
           autre.setAttribute('aria-pressed', String(autre === b))
         );
-
-        const f = b.dataset.filtre;
-        let visibles = 0;
-
-        $$('.carte-app').forEach((carte) => {
-          const ok =
-            f === 'tout' ||
-            (f === 'web' && carte.dataset.web === 'oui') ||
-            carte.dataset.statut === f;
-          carte.hidden = !ok;
-          if (ok) visibles += 1;
-        });
-
-        if (vide) vide.hidden = visibles !== 0;
+        filtreActif = b.dataset.filtre;
+        actualiser();
       });
     });
+
+    if (champ) {
+      champ.addEventListener('input', () => {
+        requete = champ.value.trim().toLowerCase();
+        actualiser();
+      });
+    }
+
+    if (effacer) {
+      effacer.addEventListener('click', () => {
+        if (champ) {
+          champ.value = '';
+          requete = '';
+          actualiser();
+          champ.focus();
+        }
+      });
+    }
   }
 
   /* ---------------- Fiche détaillée -------------------------------- */
@@ -299,10 +390,21 @@
     const web = app.liens && app.liens.essai;
     const depot = app.liens && app.liens.depot;
 
+    const visuelSceau = app.icone
+      ? `<img class="fiche__icone-img" src="${esc(app.icone)}" alt="${esc(app.nom)}" width="64" height="64">`
+      : `<span class="fiche__monogramme">${esc(app.monogramme)}</span>`;
+
+    const banniereHtml = app.banniere
+      ? `<div class="fiche__banniere-wrap">
+           <img class="fiche__banniere-img" src="${esc(app.banniere)}" alt="Aperçu ${esc(app.nom)}" width="1024" height="500">
+         </div>`
+      : '';
+
     return `
     <div style="--app-c1:${esc(app.accent[0])};--app-c2:${esc(app.accent[1])}">
+      ${banniereHtml}
       <div class="fiche__tete">
-        <div class="carte-app__sceau" aria-hidden="true">${esc(app.monogramme)}</div>
+        <div class="carte-app__sceau ${app.icone ? 'carte-app__sceau--image' : ''}" aria-hidden="true">${visuelSceau}</div>
         <div>
           <h2 id="fiche-titre">${esc(app.nom)}</h2>
           <p class="fiche__muse">${esc(app.muse)}</p>
@@ -316,7 +418,7 @@
         <span class="etiquette">${esc(app.categorie)}</span>
       </div>
 
-      <p style="color:var(--texte-doux)">${esc(app.resume)}</p>
+      <p style="color:var(--texte-doux);font-size:1.02rem;line-height:1.6">${esc(app.resume)}</p>
 
       ${app.avis ? `<div class="note">${icone('info')}<p style="margin:0">${esc(app.avis)}</p></div>` : ''}
 
@@ -347,7 +449,7 @@
 
       ${lignesTelechargement(app)}
 
-      <div class="carte-app__actions" style="margin-top:1.5rem">
+      <div class="carte-app__actions" style="margin-top:1.8rem">
         ${
           web
             ? `<a class="bouton bouton--primaire" href="${esc(web)}" target="_blank" rel="noopener">
@@ -360,6 +462,8 @@
                  ${icone('github')}Code source</a>`
             : ''
         }
+        <button class="bouton bouton--secondaire" type="button" data-partage="${esc(app.id)}">
+          ${icone('partage')}Partager le lien</button>
         <a class="bouton bouton--fantome" href="mailto:${esc(EUROPASOFT.societe.contact)}?subject=${encodeURIComponent(app.nom)}">
           Signaler un défaut</a>
       </div>
@@ -395,11 +499,12 @@
       if (e.target === fiche) fermerFiche();
     });
 
-    $('#fermer-fiche').addEventListener('click', fermerFiche);
+    const boutonFermer = $('#fermer-fiche');
+    if (boutonFermer) boutonFermer.addEventListener('click', fermerFiche);
 
     /* Piège à tabulation : le focus reste dans le panneau ouvert. */
     document.addEventListener('keydown', (e) => {
-      if (fiche.dataset.ouvert !== 'oui') return;
+      if (!fiche || fiche.dataset.ouvert !== 'oui') return;
       if (e.key === 'Escape') {
         fermerFiche();
         return;
@@ -422,6 +527,82 @@
         premier.focus();
       }
     });
+  }
+
+  /* ---------------- Partage & Liens profonds ----------------------- */
+
+  function brancherPartage() {
+    document.addEventListener('click', async (e) => {
+      const bouton = e.target.closest('[data-partage]');
+      if (!bouton) return;
+      e.preventDefault();
+
+      const appId = bouton.dataset.partage;
+      const app = EUROPASOFT.applications.find((a) => a.id === appId);
+      if (!app) return;
+
+      let cibleUrl = window.location.href.split('#')[0];
+      if (!cibleUrl.includes('applications.html')) {
+        const parts = cibleUrl.split('/');
+        parts[parts.length - 1] = 'applications.html';
+        cibleUrl = parts.join('/');
+      }
+      cibleUrl += '#' + appId;
+
+      if (navigator.share && window.matchMedia('(max-width: 768px)').matches) {
+        try {
+          await navigator.share({
+            title: `${app.nom} — EuropaSoft`,
+            text: app.baseline,
+            url: cibleUrl,
+          });
+          return;
+        } catch (err) {
+          /* Fallback sur la copie dans le presse-papiers si annulation ou échec */
+        }
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(cibleUrl);
+          afficherToast(`Lien vers ${app.nom} copié !`);
+          return;
+        } catch (err) {
+          /* fallback */
+        }
+      }
+
+      prompt('Copiez le lien direct vers cette application :', cibleUrl);
+    });
+
+    /* Copie rapide sur la page Contact */
+    const boutonCopierCourriel = $('#copier-courriel');
+    if (boutonCopierCourriel) {
+      boutonCopierCourriel.addEventListener('click', async () => {
+        const email = EUROPASOFT.societe.contact;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(email);
+            afficherToast('Adresse courriel copiée !');
+          } else {
+            prompt('Copiez l’adresse courriel :', email);
+          }
+        } catch (err) {
+          prompt('Copiez l’adresse courriel :', email);
+        }
+      });
+    }
+
+    /* Défilement automatique vers l'ancre au chargement */
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
+      setTimeout(() => {
+        const cible = document.getElementById(id);
+        if (cible) {
+          cible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 200);
+    }
   }
 
   /* ---------------- Tiroir de navigation --------------------------- */
@@ -492,7 +673,7 @@
     );
   }
 
-  /* ---------------- En-tête, révélations, section courante --------- */
+  /* ---------------- En-tête, révélations, défilement --------------- */
 
   function brancherDefilement() {
     const entete = $('#entete');
@@ -516,10 +697,16 @@
           }
         });
       },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+      { rootMargin: '60px 0px 60px 0px', threshold: 0.01 }
     );
-    $$('.revelation').forEach((el) => observateur.observe(el));
-
+    $$('.revelation').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.dataset.vue = 'oui';
+      } else {
+        observateur.observe(el);
+      }
+    });
   }
 
   /* ---------------- Divers ----------------------------------------- */
@@ -541,8 +728,9 @@
     rendrePromesses();
     rendreApplications();
     rendreJournal();
-    brancherFiltres();
+    brancherFiltresEtRecherche();
     brancherFiche();
+    brancherPartage();
     brancherTiroir();
     brancherTheme();
     brancherDefilement();

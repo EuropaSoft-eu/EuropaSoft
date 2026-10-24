@@ -139,7 +139,12 @@
             </span>
             <div>
               <h2>Courriel</h2>
-              <p><a href="mailto:contact@europasoft.fr">contact@europasoft.fr</a></p>
+              <div class="ligne-copie-courriel">
+                <a href="mailto:contact@europasoft.fr">contact@europasoft.fr</a>
+                <button type="button" class="bouton-copier" id="copier-courriel" aria-label="Copier l'adresse courriel" title="Copier l'adresse">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+              </div>
               <p class="coordonnee__detail">Réponse sous quelques jours ouvrés.</p>
             </div>
           </div>
@@ -190,7 +195,8 @@
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="applications.html">Applications</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
           <li><a href="https://github.com/Yoann-CRAMATTE" rel="noopener">GitHub</a></li>
         </ul>
       </div>
@@ -199,14 +205,14 @@
         <h4>Contact</h4>
         <ul>
           <li><a href="mailto:contact@europasoft.fr">contact@europasoft.fr</a></li>
-          <li><a href="https://www.europasoft.eu" rel="noopener">www.europasoft.eu</a></li>
+          <li><a href="https://europasoft.fr" rel="noopener">europasoft.fr</a></li>
         </ul>
       </div>
     </div>
 
     <div class="pied__bas">
       <p style="margin:0">© <span id="annee">2026</span> EuropaSoft — Yoann CRAMATTE</p>
-      <p style="margin:0">Aucun traceur sur ce site. Aucun cookie déposé.</p>
+      <p style="margin:0"><a href="mentions-legales.html">Mentions légales & Confidentialité</a> · Aucun traceur sur ce site</p>
     </div>
   </div>
 </footer>

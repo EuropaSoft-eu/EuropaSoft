@@ -48,6 +48,14 @@
         : `<a class="bouton bouton--primaire" href="applications.html#${esc(app.id)}">
              Voir l’application</a>`;
 
+      const visuelIcone = app.icone
+        ? `<img class="diapo__icone-img" src="${esc(app.icone)}" alt="${esc(app.nom)}" width="140" height="140">`
+        : `<span class="diapo__lettre">${esc(app.monogramme)}</span>`;
+
+      const banniereHtml = app.banniere
+        ? `<div class="diapo__banniere-fond" style="background-image:url('${esc(app.banniere)}')"></div>`
+        : '';
+
       return `
       <article class="diapo" role="group" aria-roledescription="diapositive"
                aria-label="${esc(app.nom)}, ${i + 1} sur ${total}"
@@ -67,8 +75,9 @@
         </div>
 
         <div class="diapo__visuel" aria-hidden="true">
+          ${banniereHtml}
           <div class="diapo__halo"></div>
-          <div class="diapo__sceau">${esc(app.monogramme)}</div>
+          <div class="diapo__sceau ${app.icone ? 'diapo__sceau--image' : ''}">${visuelIcone}</div>
           <ul class="diapo__plateformes">
             ${app.plateformes.slice(0, 4).map((p) => `<li>${esc(p)}</li>`).join('')}
             ${app.plateformes.length > 4 ? `<li>+${app.plateformes.length - 4}</li>` : ''}

@@ -13,7 +13,7 @@ const EUROPASOFT = {
     nom: 'EuropaSoft',
     auteur: 'Yoann CRAMATTE',
     contact: 'contact@europasoft.fr',
-    site: 'https://www.europasoft.eu',
+    site: 'https://europasoft.fr',
     github: 'https://github.com/Yoann-CRAMATTE',
     annee: 2026,
   },
@@ -43,6 +43,19 @@ const EUROPASOFT = {
   /* Journal public, repris des changelogs des applications.
      La plus récente en tête. */
   actualites: [
+    {
+      app: 'chasseur',
+      date: '2026-10-15',
+      dateLisible: '15 octobre 2026',
+      version: '1.0.0',
+      titre: 'Le Chasseur de Champignons — repérage GPS et respect absolu des coins secrets',
+      points: [
+        'Enregistrement de stations de cueillette hors ligne par coordonnées GPS précises.',
+        'Guidage retour par boussole et distance en temps réel, sans exiger de réseau.',
+        'Confidentialité absolue : aucune coordonnée de vos coins n’est transmise à un serveur.',
+        'Portage multiplateforme complet développé avec Flutter.',
+      ],
+    },
     {
       app: 'clio',
       date: '2026-09-12',
@@ -117,6 +130,8 @@ const EUROPASOFT = {
       id: 'clio',
       nom: 'Clio',
       monogramme: 'C',
+      icone: 'assets/img/apps/clio/clio-icone-512.png',
+      banniere: 'assets/img/apps/clio/clio-banniere-1024x500.png',
       muse: 'Clio, muse de l’Histoire',
       statut: 'disponible',
       version: '1.0.0',
@@ -138,7 +153,7 @@ const EUROPASOFT = {
         /* Renseigner l’URL quand la version web sera déposée en ligne. */
         essai: '',
         essaiLibelle: 'Ouvrir dans le navigateur',
-        depot: '', // dépôt privé pour l’instant
+        depot: 'https://github.com/Yoann-CRAMATTE/Clio',
       },
       telechargements: [
         { plateforme: 'Android', format: 'APK', url: '', taille: '' },
@@ -161,6 +176,7 @@ const EUROPASOFT = {
       id: 'calliope',
       nom: 'Calliope',
       monogramme: 'C',
+      icone: 'assets/img/apps/calliope/calliope-icone.svg',
       muse: 'Calliope, muse de l’éloquence et de la poésie épique, sœur de Clio',
       statut: 'disponible',
       version: '1.1.0',
@@ -194,6 +210,45 @@ const EUROPASOFT = {
       ],
       stores: [],
       installable: true,
+    },
+
+    /* ---------------------------------------------------------- */
+    {
+      id: 'chasseur',
+      nom: 'Le Chasseur de Champignons',
+      monogramme: 'C',
+      icone: 'assets/img/apps/chasseur/chasseur-icone-512.png',
+      muse: 'Compagnon de cueillette et de géolocalisation autonome',
+      statut: 'disponible',
+      version: '1.0.0',
+      dateVersion: '15 octobre 2026',
+      categorie: 'Plein air & Cartographie',
+      baseline: 'Repérez, mémorisez et retrouvez vos coins de cueillette',
+      resume:
+        'Application tout-terrain pour amateurs de cueillette : mémorisation GPS hors ligne des stations de champignons, guidage par boussole et distance, fiches d’identification et carnet de récolte personnel. Vos coins secrets restent strictement sur votre appareil, sans serveur ni analyse de position.',
+      accent: ['#B85D19', '#7A3508'],
+      points: [
+        'Enregistrement instantané d’un point GPS même en pleine forêt sans réseau cellulaire.',
+        'Guidage retour par cap et distance directe sans dépendance à un fond de carte en ligne.',
+        'Photos, notes et espèces associées à chaque station de cueillette privée.',
+        'Carnet de récoltes horodaté pour analyser les saisons et les futures poussées.',
+        'Données locales au téléphone : aucun compte, aucun partage forcé de vos coins secrets.',
+      ],
+      plateformes: ['Android', 'iOS', 'Web', 'Windows', 'macOS'],
+      liens: {
+        essai: '',
+        essaiLibelle: '',
+        depot: 'https://github.com/Yoann-CRAMATTE/LeChasseurDeChampignions',
+      },
+      telechargements: [
+        { plateforme: 'Android', format: 'APK', url: '', taille: '' },
+        { plateforme: 'Code source', format: 'GitHub', url: 'https://github.com/Yoann-CRAMATTE/LeChasseurDeChampignions', taille: '' },
+      ],
+      stores: [
+        { id: 'play', nom: 'Google Play', url: '' },
+      ],
+      avis:
+        'Version 1.0.0 fonctionnelle. Code source disponible sur GitHub ; paquets d’installation prêts au déploiement.',
     },
 
     /* ---------------------------------------------------------- */

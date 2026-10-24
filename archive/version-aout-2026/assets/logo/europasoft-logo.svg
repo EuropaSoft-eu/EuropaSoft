@@ -1,0 +1,20 @@
+<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" width="200" height="67">
+  <!-- Globe sphere -->
+  <ellipse cx="35" cy="50" rx="28" ry="28" fill="none" stroke="#004A8D" stroke-width="2"/>
+  <path d="M 10 50 Q 35 30 60 50 Q 35 70 10 50" fill="none" stroke="#0099CC" stroke-width="2"/>
+  <ellipse cx="35" cy="50" rx="20" ry="25" fill="none" stroke="#00A8E8" stroke-width="1.5"/>
+
+  <!-- Stars -->
+  <g fill="#FFD700">
+    <polygon points="65,20 68,28 76,28 70,33 73,41 65,36 57,41 60,33 54,28 62,28"/>
+    <polygon points="80,15 82,21 89,21 84,25 86,31 80,27 74,31 76,25 71,21 78,21"/>
+    <polygon points="95,22 97,28 104,28 99,32 101,38 95,34 89,38 91,32 86,28 93,28"/>
+    <polygon points="70,40 72,45 78,45 73,49 75,54 70,50 65,54 67,49 62,45 68,45"/>
+    <polygon points="85,38 87,43 93,43 88,47 90,52 85,48 80,52 82,47 77,43 83,43"/>
+    <polygon points="100,45 102,50 108,50 103,54 105,59 100,55 95,59 97,54 92,50 98,50"/>
+    <polygon points="75,60 77,65 83,65 78,69 80,74 75,70 70,74 72,69 67,65 73,65"/>
+  </g>
+
+  <!-- Text "EuropaSoft" -->
+  <text x="110" y="65" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#004A8D">EuropaSoft</text>
+</svg>

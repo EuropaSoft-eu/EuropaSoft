@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clio — Application Productive Minimaliste</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Clash+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #050505;
+      --bg-card: #0a0a0a;
+      --color-blue-primary: #004A8D;
+      --color-blue-secondary: #0099CC;
+      --color-blue-light: #00A8E8;
+      --color-gold: #FFD700;
+      --text-primary: #FFFFFF;
+      --text-secondary: #E0E0E0;
+      --text-muted: #A0A0A0;
+      --border-hairline: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(255, 255, 255, 0.12);
+      --shadow-inset-light: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: linear-gradient(135deg, #050505 0%, #0d0d1a 50%, #050505 100%);
+      color: var(--text-primary);
+      font-family: 'Geist', -apple-system, system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(0, 153, 204, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Clash Display', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 1rem; }
+    h2 { font-size: clamp(1.75rem, 6vw, 2.5rem); margin-bottom: 1rem; }
+    h3 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+
+    p { color: var(--text-secondary); line-height: 1.75; }
+
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5, 5, 5, 0.7);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-hairline);
+      padding: 1rem 2rem;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      color: var(--color-blue-light);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 400ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .back-link:hover { color: var(--color-gold); }
+
+    .logo-mini {
+      height: 32px;
+      width: auto;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 80dvh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+      z-index: 2;
+      background: linear-gradient(180deg, rgba(0, 153, 204, 0.1) 0%, transparent 100%);
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 900px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(0, 153, 204, 0.15);
+      border: 1px solid var(--border-hairline);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--color-blue-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      background: linear-gradient(135deg, #00A8E8 0%, #0099CC 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+
+    /* Features Grid */
+    .features-section {
+      position: relative;
+      z-index: 2;
+      padding: 6rem 2rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: rgba(10, 10, 20, 0.6);
+      border: 1px solid var(--border-hairline);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: all 600ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-accent);
+      box-shadow: 0 0 40px rgba(0, 153, 204, 0.15);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      color: var(--color-blue-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* Download Section */
+    .download-section {
+      position: relative;
+      z-index: 2;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .download-box {
+      background: rgba(20, 20, 30, 0.5);
+      border: 1px solid var(--border-hairline);
+      border-radius: 2rem;
+      padding: 2rem;
+      transition: all 600ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .download-box:hover {
+      background: rgba(0, 153, 204, 0.1);
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+    }
+
+    .download-box h4 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .download-box p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--color-gold) 0%, #F0C000 100%);
+      color: #000;
+      border: none;
+      border-radius: 9999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 600ms cubic-bezier(0.32, 0.72, 0, 1);
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 2;
+      background: rgba(0, 0, 0, 0.5);
+      border-top: 1px solid var(--border-hairline);
+      backdrop-filter: blur(20px);
+      padding: 3rem 2rem 1.5rem;
+      text-align: center;
+    }
+
+    .footer-text { font-size: 0.85rem; color: var(--text-muted); }
+
+    @keyframes fadeUpBlur {
+      from { opacity: 0; transform: translateY(30px) blur(8px); }
+      to { opacity: 1; transform: translateY(0) blur(0); }
+    }
+
+    .feature-card { animation: fadeUpBlur 900ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+    .feature-card:nth-child(1) { animation-delay: 100ms; }
+    .feature-card:nth-child(2) { animation-delay: 200ms; }
+    .feature-card:nth-child(3) { animation-delay: 300ms; }
+
+    @media (max-width: 768px) {
+      .hero { min-height: 60dvh; padding: 4rem 1.5rem 2rem; }
+      .hero h1 { font-size: 2.5rem; }
+      .features-section { padding: 4rem 1.5rem; }
+      .download-section { padding: 4rem 1.5rem; }
+      footer { padding: 2rem 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-nav container">
+      <a href="/" class="back-link">← Retour</a>
+      <img src="../assets/logo/europasoft-logo.svg" alt="EuropaSoft" class="logo-mini">
+      <div style="width: 60px;"></div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">Productivité Minimaliste</div>
+      <h1>Clio</h1>
+      <p class="hero-subtitle">Gestion de tâches épurée. Synchronisation instantanée. Zéro distraction.</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features-section">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 0.5rem;">Pourquoi Clio?</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Conçu pour les productifs qui veulent simplicité et puissance.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">✓</div>
+          <h3>Interface Minimaliste</h3>
+          <p>Rien de superflue. Juste vos tâches, vos projets, votre focus. Design épuré pour zéro distraction.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Sync Instantanée</h3>
+          <p>Web, macOS, Windows, Linux, iOS, Android. Tous vos appareils synchronisés en temps réel.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Vie Privée d'Abord</h3>
+          <p>Vos données restent vôtres. Chiffrement end-to-end. Zéro tracking. Zéro publicité.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Mobile-First</h3>
+          <p>Optimisé pour téléphone. Gestion complète de vos tâches même sans connexion internet.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3>Intégrations</h3>
+          <p>Calendrier, mail, Slack, Notion. Connectez Clio aux outils que vous utilisiez déjà.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Analytics Simples</h3>
+          <p>Visualisez votre productivité. Graphiques minimalistes. Rien d'overwhelming.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download -->
+  <section class="download-section">
+    <div class="container">
+      <h2>Télécharger Clio</h2>
+      <p style="color: var(--text-muted); margin-top: 1rem;">Disponible partout, gratuit pour toujours.</p>
+
+      <div class="download-grid">
+        <div class="download-box">
+          <h4>Web</h4>
+          <p>Utilisation en ligne. Interface complète.</p>
+          <a href="#" class="btn">Ouvrir</a>
+        </div>
+
+        <div class="download-box">
+          <h4>macOS</h4>
+          <p>Intel & Apple Silicon. Version 13+.</p>
+          <a href="#" class="btn">Télécharger</a>
+        </div>
+
+        <div class="download-box">
+          <h4>Windows</h4>
+          <p>Windows 10+. Installation simple.</p>
+          <a href="#" class="btn">Télécharger</a>
+        </div>
+
+        <div class="download-box">
+          <h4>Linux</h4>
+          <p>.AppImage ou .deb. Multi-distro.</p>
+          <a href="#" class="btn">Télécharger</a>
+        </div>
+
+        <div class="download-box">
+          <h4>iOS</h4>
+          <p>iPhone & iPad. Gratuit sur App Store.</p>
+          <a href="#" class="btn">App Store</a>
+        </div>
+
+        <div class="download-box">
+          <h4>Android</h4>
+          <p>Android 10+. Gratuit sur Google Play.</p>
+          <a href="#" class="btn">Google Play</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p class="footer-text">© 2026 EuropaSoft. Clio est libre et open-source.</p>
+    </div>
+  </footer>
+</body>
+</html>

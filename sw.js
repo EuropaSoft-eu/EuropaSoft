@@ -16,7 +16,7 @@
    fichiers resteront servis depuis le cache.
    ------------------------------------------------------------------ */
 
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'europasoft-' + VERSION;
 const PAGE_HORS_LIGNE = 'hors-ligne.html';
 
@@ -27,6 +27,7 @@ const A_PRECHARGER = [
   './index.html',
   './applications.html',
   './contact.html',
+  './mentions-legales.html',
   './hors-ligne.html',
   './manifest.webmanifest',
   './assets/css/style.css',
@@ -39,6 +40,10 @@ const A_PRECHARGER = [
   './assets/img/favicon-64.png',
   './assets/img/icone-192.png',
   './assets/img/icone-512.png',
+  './assets/img/apps/clio/clio-banniere-1024x500.png',
+  './assets/img/apps/clio/clio-icone-512.png',
+  './assets/img/apps/calliope/calliope-icone.svg',
+  './assets/img/apps/chasseur/chasseur-icone-512.png',
 ];
 
 self.addEventListener('install', (e) => {

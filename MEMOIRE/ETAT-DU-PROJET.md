@@ -213,3 +213,23 @@ code de Morphée pour sa description. **Rien n'a été inventé.**
   présentes, service worker actif (22 entrées), pages connues entièrement
   fonctionnelles hors ligne, page inconnue basculant sur la page de
   secours, aucune erreur en `file://`.
+
+### 17 octobre 2026 — modernisation globale & intégration des visuels
+
+- **Visuels & identité graphique** :
+  - Centralisation et organisation de tous les visuels dans `assets/img/` : master logos originaux dans `originaux/`, tracé vectoriel pur dans `vectoriel/`, visuels applicatifs dans `apps/` (Clio : icône 512 + bannière 1024×500 ; Calliope : icône vectorielle SVG extraite ; Le Chasseur de Champignons : icônes 192 et 512).
+  - Prise en charge des icônes réelles et bannières dans le carrousel d'accueil (`carrousel.js`), les cartes de catalogue et la modale détaillée (`app.js`).
+- **Catalogue & Contenu** :
+  - Intégration de l'application **Le Chasseur de Champignons** (v1.0.0, 15 octobre 2026) dans `donnees.js` et mise à jour du journal d'actualités.
+  - Bascule officielle de l'adresse du site sur `https://europasoft.fr` (en cohérence avec `contact@europasoft.fr`).
+- **Fonctionnalités UI / UX modernes** :
+  - Ajout d'une **barre de recherche instantanée** combinée aux filtres par catégorie dans `applications.html` avec compteur de résultats en temps réel.
+  - Boutons de **partage natif (`navigator.share`)** et **copie de lien direct** avec ancre (#clio, #chasseur...) sur chaque application.
+  - Bouton de **copie rapide de l'adresse courriel** dans `contact.html`.
+  - Notification toast accessible et animée pour tous les retours de copie.
+- **Conformité & Légal** :
+  - Création de la page `mentions-legales.html` (éditeur, hébergeur GitHub Pages, engagement d'absence totale de collecte/cookies).
+- **Service Worker & PWA** :
+  - Passage de `VERSION` à `'v2'` dans `sw.js`.
+  - Inclusion des nouvelles pages et des visuels applicatifs dans le pré-cache hors ligne.
+

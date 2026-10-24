@@ -1,0 +1,31 @@
+{
+  "name": "EuropaSoft",
+  "version": "1.0.0",
+  "company": "EuropaSoft",
+  "developer": "Yoann Cramatte",
+  "email": "ycramatte@gmail.com",
+  "website": "https://europasoft.eu",
+  "copyright": "© 2026 EuropaSoft. All rights reserved.",
+  "description": "Platform for discovering and distributing EuropaSoft applications across web and native platforms.",
+  "type": "web-application",
+  "platform": "web",
+  "stack": {
+    "frontend": "HTML5 + CSS3 + Vanilla JavaScript",
+    "hosting": "OVH (static)",
+    "languages": ["fr", "en"]
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-08-22",
+      "changes": [
+        "Initial MVP launch",
+        "Homepage showcase with 3 apps",
+        "App detail pages (Clio, Chasseur de Champignons, Collectiv'City)",
+        "Download & launch flows",
+        "Mobile-responsive design",
+        "Premium branding (EuropaSoft blue + gold)"
+      ]
+    }
+  ]
+}

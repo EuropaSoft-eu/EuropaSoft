@@ -101,6 +101,22 @@
         </p>
       </div>
 
+      <div class="barre-recherche">
+        <div class="champ-recherche">
+          <svg class="champ-recherche__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input type="search" id="recherche-apps" placeholder="Rechercher une application (nom, plateforme, mot-clé)..." aria-label="Rechercher une application">
+          <button type="button" id="recherche-effacer" class="champ-recherche__effacer" aria-label="Effacer la recherche" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <p class="compteur-resultats" id="compteur-resultats" aria-live="polite"></p>
+      </div>
+
       <div class="filtres" role="group" aria-label="Filtrer les applications">
         <button class="filtre" type="button" data-filtre="tout" aria-pressed="true">Toutes</button>
         <button class="filtre" type="button" data-filtre="disponible" aria-pressed="false">Disponibles</button>
@@ -150,8 +166,9 @@
         <h4>Le site</h4>
         <ul>
           <li><a href="index.html">Accueil</a></li>
-          <li><a href="applications.html">Applications</a></li>
+          <li><a href="applications.html" aria-current="page">Applications</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
           <li><a href="https://github.com/Yoann-CRAMATTE" rel="noopener">GitHub</a></li>
         </ul>
       </div>
@@ -160,14 +177,14 @@
         <h4>Contact</h4>
         <ul>
           <li><a href="mailto:contact@europasoft.fr">contact@europasoft.fr</a></li>
-          <li><a href="https://www.europasoft.eu" rel="noopener">www.europasoft.eu</a></li>
+          <li><a href="https://europasoft.fr" rel="noopener">europasoft.fr</a></li>
         </ul>
       </div>
     </div>
 
     <div class="pied__bas">
       <p style="margin:0">© <span id="annee">2026</span> EuropaSoft — Yoann CRAMATTE</p>
-      <p style="margin:0">Aucun traceur sur ce site. Aucun cookie déposé.</p>
+      <p style="margin:0"><a href="mentions-legales.html">Mentions légales & Confidentialité</a> · Aucun traceur sur ce site</p>
     </div>
   </div>
 </footer>
